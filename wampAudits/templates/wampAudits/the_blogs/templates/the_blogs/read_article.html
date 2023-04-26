@@ -1,0 +1,33 @@
+{% extends 'the_blogs/base.html' %}
+{% block content %}
+
+<div class="container bg-light p-5 my-5 border">
+  <div class="container-fluid p-3 bg-dark text-white"><h2 class="text-center"> {{article.title}} </h2></div>
+  <h3>{{ article.text|linebreaks }}</h3>
+</div>
+
+<div class="container bg-light p-3 my-5 border">
+  
+  <h3> By {{article.author}} </h3>
+  <p> {{ article.date_added}}</p>
+
+{% if user.is_authenticated %}
+  {% if article.author == user %}
+    <a href="{% url 'the_blogs:edit_article' article.id %}">Need to make changes?</a>
+  {% else %}
+    <a href="{% url 'the_blogs:new_article' topic.id %}"> Write an article</a>
+  {% endif %}
+{% else %}
+  <p>Enjoying your stay?
+    <a href="{% url 'users:register' %}">register here</a>
+  </p>
+{% endif %}
+ 
+  <p> More from 
+    <a href="{% url 'the_blogs:topic' topic.id %}">{{topic}}</a> 
+  </p>
+
+</div>
+
+
+{% endblock %}

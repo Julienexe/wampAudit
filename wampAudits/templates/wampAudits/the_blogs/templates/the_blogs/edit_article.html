@@ -1,0 +1,17 @@
+{% extends 'the_blogs/base.html' %}
+{% load bootstrap5 %}
+{% block header %}
+ <h2>Edit your article</h2>
+{% endblock header %}
+
+{% block content  %}
+<h2><a href="{% url 'the_blogs:topic' topic.id %}" style="text-decoration:none;">{{topic}}</a></h2>
+
+<form action="{% url 'the_blogs:edit_article' article.id %}" method="POST">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <button name="submit" class="btn btn-outline-primary">Save changes</button>
+
+</form>
+
+{% endblock %}

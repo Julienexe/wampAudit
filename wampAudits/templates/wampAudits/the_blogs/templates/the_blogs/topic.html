@@ -1,0 +1,64 @@
+{% extends 'the_blogs/base.html' %}
+{% load bootstrap5 %}
+
+{% block header %}
+ <h1 style="text-align: center;">{{ topic }}</h1>
+{% endblock header %}
+
+{% block content  %}
+
+  <div class="d-inline-flex flex-wrap">
+    {% for article in articles %}
+    <div class="row">
+      <div class="col-sm-6 "> 
+        <div class="card " style="width:550px; display: inline-block;  height: 150px;">
+          <div class="card-header bg-dark text-white">
+            <h3>
+              {{ article.title }}
+             </h3>
+          </div> 
+        
+          <div class="card-body">
+            {{ article }}
+            <a href="{% url 'the_blogs:read_article' article.id %}" class="card-link">Read more?</a>
+          </div>
+          <small class="card-footer p-2">
+            <b>By {{article.author}}</b>
+          </small>
+        </div>
+      </div>
+    </div>
+    
+    {%empty%}
+    <p>Oops! Looks like you haven't written anything here yet.</p>      
+    {% endfor %}
+  </div>
+  <div class="container-fluid p-3 my-5 bg-dark text-white border">
+    <h3>
+      <a href="{% url 'the_blogs:new_article' topic.id %}" style="text-decoration:none;">Write an article</a> 
+    </h3>
+  </div>
+
+
+
+{% endblock %}
+
+<!--card code-->
+<!--<div class="card " style="width:500px; display: inline-block;  height: 200px;">
+  <div class="card-header bg-dark text-white">
+    <h3>
+      {{ article.title }}
+     </h3>
+  </div> 
+
+  <div class="card-body">
+    {{ article }}
+    <a href="{% url 'the_blogs:read_article' article.id %}" class="card-link">Read more?</a>
+  </div>
+  <small class="card-footer p-2">
+    <b>By {{article.author}}</b>
+  </small>
+</div>-->
+
+
+

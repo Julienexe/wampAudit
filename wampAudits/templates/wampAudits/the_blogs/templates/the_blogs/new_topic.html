@@ -1,0 +1,17 @@
+{% extends 'the_blogs/base.html' %}
+{% load bootstrap5 %}
+{% block header %}
+ <h2>Add a new topic:</h2>
+{% endblock header %}
+
+{% block content  %}
+<div class="container-fluid p-3 my-5 bg-light  border" style="border-radius: 14px;">
+  <form action="{% url 'the_blogs:new_topic' %}" method="POST" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button name="submit" class="btn btn-outline-primary">Add topic</button>
+  </form>
+</div>
+  
+
+{% endblock %}

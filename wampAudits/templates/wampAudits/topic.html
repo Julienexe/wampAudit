@@ -1,0 +1,114 @@
+{% extends 'wampAudits/base.html' %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block content %}
+  <main class="main">
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9" data-aos="fade-up">
+                    <!-- topic title -->
+                    <h3 class="category-title">Category: {{topic.text}}</h3>
+                    
+                    <!-- blog posts here -->
+                    <!-- for loop begin -->
+                    {% for article in topic.articles.all %}
+                        <div class="d-md-flex post-entry-2 half">
+                        <a href="{% url 'wampAudits:single-post' article.id %}" class="me-4 thumbnail">
+                            <img src="{{ article.article_picture.url }}" alt="" class="img-fluid">
+                        </a>
+                        <div>
+                            <div class="post-meta"><span class="date">{{topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                            <!-- article title -->
+                            <h3><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h3>
+                            <!-- article content up to first 300 words -->
+                            <p>{{article.text|slice:":300"}}</p>
+                            <div class="d-flex align-items-center author">
+                                <!-- author picture -->
+                            <div class="photo"><img src="assets/img/person-2.jpg" alt="" class="img-fluid"></div>
+                            <div class="name">
+                                <!-- author below -->
+                                <h3 class="m-0 p-0">{{article.author}}</h3>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    {% endfor %}
+                    <!-- forloop end -->
+                </div>
+
+
+                <!-- sidebar -->
+                <!-- ======= Sidebar ======= -->
+                <div class="col-md-3">
+                    <div class="aside-block">
+
+                        <ul class="nav nav-pills custom-tab-nav mb-4" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-popular-tab" data-bs-toggle="pill" data-bs-target="#pills-popular" type="button" role="tab" aria-controls="pills-popular" aria-selected="true">Popular</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-trending-tab" data-bs-toggle="pill" data-bs-target="#pills-trending" type="button" role="tab" aria-controls="pills-trending" aria-selected="false">Trending</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-latest-tab" data-bs-toggle="pill" data-bs-target="#pills-latest" type="button" role="tab" aria-controls="pills-latest" aria-selected="false">Latest</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+
+                            <!-- Popular -->
+                            <div class="tab-pane fade show active" id="pills-popular" role="tabpanel" aria-labelledby="pills-popular-tab">
+                                {% for article in posts reversed %}
+                                {% if forloop.counter <= 6 %}
+                                    <div class="post-entry-1 border-bottom">
+                                    <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                                    <h2 class="mb-2"><a href="#">{{article.title}}</a></h2>
+                                    <span class="author mb-3 d-block">{{article.author}}</span>
+                                    </div>
+                                {% endif %} 
+                                {% endfor %}
+
+                            <!-- Trending -->
+                            <div class="tab-pane fade" id="pills-trending" role="tabpanel" aria-labelledby="pills-trending-tab">
+                                {% for article in posts %}
+                                {% if forloop.counter <= 6 %}
+                                    <div class="post-entry-1 border-bottom">
+                                    <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                                    <h2 class="mb-2"><a href="#">{{article.title}}</a></h2>
+                                    <span class="author mb-3 d-block">{{article.author}}</span>
+                                    </div>
+                                {% endif %} 
+                                {% endfor %}
+
+                            <!-- Latest -->
+                            <div class="tab-pane fade" id="pills-latest" role="tabpanel" aria-labelledby="pills-latest-tab">
+                                {% for article in posts reversed %}
+                                {% if forloop.counter <= 5 %}
+                                    <div class="post-entry-1 border-bottom">
+                                    <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                                    <h2 class="mb-2"><a href="#">{{article.title}}</a></h2>
+                                    <span class="author mb-3 d-block">{{article.author}}</span>
+                                    </div>
+                                {% endif %}  
+                                {% endfor %}
+
+                            </div> <!-- End Latest -->
+                        </div>
+                    </div>
+                    <div class="aside-block">
+                        <h3 class="aside-title">Categories</h3>
+                        <ul class="aside-links list-unstyled">
+                            {% for topic in topics %}
+                            <li><a href="category.html"><i class="bi bi-chevron-right"></i>{{topic.text}}</a></li>
+                            {% endfor %}
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </section>
+  </main>
+{%  endblock %}

@@ -1,0 +1,224 @@
+{% extends 'wampAudits/base.html' %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block content %}
+
+
+
+  <main id="main">
+
+    <section class="single-post-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9 post-content" data-aos="fade-up">
+
+            <!-- ======= Single Post Content ======= -->
+            <div class="single-post">
+              <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+              <h1 class="mb-5">{{article.title}}</h1>
+              <p>{{article.text|slice:":50"}}</p>
+
+              <figure class="my-4">
+                <img src="{{ article.article_picture.url }}" alt="" class="img-bg">
+                <figcaption>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, odit? </figcaption>
+              </figure>
+              <p>{{article.text|slice:"51:"}}</p>
+            </div><!-- End Single Post Content -->
+
+            <!-- ======= Comments ======= -->
+            <div class="comments">
+              <!-- the button below contains a js function to hide the comments content to clean up the page -->
+              <button onclick="toggleContent()" class="btn btn-primary">
+                {% if  article.comments.count != 1 %}
+                  <h5 class="comment-title py-4">{{article.comments.count}} Comments</h5>
+                {% else %}
+                  <h5 class="comment-title py-4">1 Comment</h5>
+                {% endif %}  
+              </button>
+              <div class="comment d-flex mb-4">
+                <div id="myContent" class="d-none">
+                  <!-- the content below for comments and replies is hidden by the button above -->
+                  {% for comment in article.comments.all %}
+                    <div class="flex-shrink-0">
+                      <div class="avatar avatar-sm rounded-circle">
+                        <!-- <img class="avatar-img" src="assets/img/person-5.jpg" alt="" class="img-fluid"> -->
+                      </div>
+                    </div>
+                    <div class="flex-grow-1 ms-2 ms-sm-3">
+                      <div class="comment-meta d-flex align-items-baseline">
+                        <h6 class="me-2">{{comment.name}}</h6>
+                        <span class="text-muted">{{comment.date_created}}</span>
+                      </div>
+                      <div class="comment-body">
+                        {{comment.text}}
+                      </div>
+
+                      <div class="comment-replies bg-light p-3 mt-3 rounded">
+                        {% if  comment.replies.count != 1 %}
+                        <h6 class="comment-replies-title mb-4 text-muted text-uppercase">{{comment.replies.count}} replies</h6>
+                        {% else %}
+                        <h5 class="comment-title py-4">1 Reply</h5>
+                        {% endif %} 
+
+                        <!-- REPLY BUTTON CURRENTLY OUT OF  USE and SO ARE REPLIES-->
+                        <!-- <button data-bs-toggle="collapse" data-bs-target="#reply" aria-expanded="false" 
+                        aria-controls="reply" class="btn btn-primary">Reply</button> -->
+
+                        <!-- <div class="reply d-flex mb-4">
+                          {% for reply in comment.replies.all  %}
+                            <div class="flex-shrink-0">
+                              <div class="avatar avatar-sm rounded-circle">
+                                <img class="avatar-img" src="assets/img/person-4.jpg" alt="" class="img-fluid"> 
+                              </div>
+                            </div>
+                            <div class="flex-grow-1 ms-2 ms-sm-3">
+                              <div class="reply-meta d-flex align-items-baseline">
+                                <h6 class="mb-0 me-2">{{reply.name}}</h6>
+                                <span class="text-muted">{{reply.date_created}}</span>
+                              </div>
+                              <div class="reply-body">
+                                {{reply.text}}
+                              </div>
+                            </div>
+                          {% endfor %}
+                        </div>-->
+                        
+                        <!-- replies form OUT OF USE -->
+                          <!-- <div class="row">
+                            <div id="reply" class="collapse" >
+                              <form action="{% url 'wampAudits:single-post' article.id %}" method="POST">
+                                {% csrf_token %}
+                                <p>Reply form here</p>
+                              </form>
+                            </div>
+                          </div> -->
+                        <!-- end -->
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>  
+              </div>
+            </div><!-- End Comments -->
+
+            <!-- ======= Comments Form ======= -->
+            <div class="row justify-content-center mt-5">
+              <div class="col-lg-12  bg-light">
+                <h5 class="comment-title">Leave a Comment</h5>
+                <div class="row">
+                  <form action="{% url 'wampAudits:single-post' article.id %}" method="POST">
+                    
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <!-- <div class="col-lg-6 mb-3">
+                      <label for="comment-name">Name</label>
+                      <input type="text" class="form-control" id="comment-name" placeholder="Enter your name">
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                      <label for="comment-email">Email</label>
+                      <input type="text" class="form-control" id="comment-email" placeholder="Enter your email">
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label for="comment-message">Message</label>
+
+                      <textarea class="form-control" id="comment-message" placeholder="Enter your name" cols="30" rows="10"></textarea>
+                    </div> -->
+                    <div class="col-12">
+                      <input type="submit" class="btn btn-primary" value="Post comment">
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- End Comments Form -->
+
+          </div>
+          <div class="col-md-3">
+            <!-- ======= Sidebar ======= -->
+            <div class="aside-block">
+
+              <ul class="nav nav-pills custom-tab-nav mb-4" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-popular-tab" data-bs-toggle="pill" data-bs-target="#pills-popular" type="button" role="tab" aria-controls="pills-popular" aria-selected="true">Popular</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-trending-tab" data-bs-toggle="pill" data-bs-target="#pills-trending" type="button" role="tab" aria-controls="pills-trending" aria-selected="false">Trending</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-latest-tab" data-bs-toggle="pill" data-bs-target="#pills-latest" type="button" role="tab" aria-controls="pills-latest" aria-selected="false">Latest</button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="pills-tabContent">
+
+                <!-- Popular -->
+                <div class="tab-pane fade show active" id="pills-popular" role="tabpanel" aria-labelledby="pills-popular-tab">
+                  {% for article in posts reversed %}
+                    {% if forloop.counter <= 6 %}
+                      <div class="post-entry-1 border-bottom">
+                        <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                        <h2 class="mb-2"><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                        <span class="author mb-3 d-block">{{article.author}}</span>
+                      </div>
+                    {% endif %} 
+                  {% endfor %}
+
+                <!-- Trending -->
+                <div class="tab-pane fade" id="pills-trending" role="tabpanel" aria-labelledby="pills-trending-tab">
+                  {% for article in posts %}
+                    {% if forloop.counter <= 6 %}
+                      <div class="post-entry-1 border-bottom">
+                        <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                        <h2 class="mb-2"><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                        <span class="author mb-3 d-block">{{article.author}}</span>
+                      </div>
+                    {% endif %} 
+                  {% endfor %}
+
+                <!-- Latest -->
+                <div class="tab-pane fade" id="pills-latest" role="tabpanel" aria-labelledby="pills-latest-tab">
+                  {% for article in posts reversed %}
+                    {% if forloop.counter <= 5 %}
+                      <div class="post-entry-1 border-bottom">
+                        <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                        <h2 class="mb-2"><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                        <span class="author mb-3 d-block">{{article.author}}</span>
+                      </div>
+                    {% endif %}  
+                  {% endfor %}
+
+                </div> <!-- End Latest -->
+
+              </div>
+            </div>
+
+            <div class="aside-block">
+              <h3 class="aside-title">Categories</h3>
+              <ul class="aside-links list-unstyled">
+                {% for topic in topics %}
+                <li><a href="category.html"><i class="bi bi-chevron-right"></i>{{topic.text}}</a></li>
+                {% endfor %}
+                
+              </ul>
+            </div><!-- End Categories -->
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main><!-- End #main -->
+{% endblock %}
+<!-- bootstrap code that makes content disappear and reappear? -->
+
+<!-- <script>
+function toggleContent() {
+  var content = document.getElementById("myContent");
+  if (content.classList.contains("d-block")) {
+    content.classList.remove("d-block");
+    content.classList.add("d-none");
+  } else {
+    content.classList.remove("d-none");
+    content.classList.add("d-block");
+  }
+}
+</script> -->

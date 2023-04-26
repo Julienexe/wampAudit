@@ -1,0 +1,16 @@
+{% extends 'the_blogs/base.html' %}
+{% load bootstrap5 %}
+
+{% block header %}
+<div class="mt-4 p-3 bg-dark text-white rounded">
+ <h1>Discover the wonders of writing </h1> 
+</div>
+{% endblock header %}
+{% block content %}
+  <h2>
+   <a href="{% url 'users:register' %}">Create an account</a> to join an expansive world of writers all over the globe. 
+ </h2>
+ <h2>
+ If you're into articles written by only the best, you're in the right place.
+ </h2>
+{% endblock %} 

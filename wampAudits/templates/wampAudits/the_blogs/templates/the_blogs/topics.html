@@ -1,0 +1,31 @@
+{% extends 'the_blogs/base.html' %}
+{% block header %}
+  <h1 style="text-align: center;">Topics</h1>
+{% endblock header %}
+
+{% block content  %}
+
+
+  {% for topic in topics %}
+  <div class="row p-2">
+    <div class="col-sm-6">
+      <div class="card" style="width:1101px; display:inline-block;  height: 150px;">
+        
+        <div class="card-body">
+          <h4>
+            <a href="{% url 'the_blogs:topic' topic.id %}" style="text-decoration:none;">
+              {{topic}}</a>
+          </h4>
+          <a href="{% url 'the_blogs:new_article' topic.id %}" style="text-decoration:none;">Write an article</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+<div class="container-fluid p-3 my-5 bg-dark text-white border">
+  <h3>
+    <a href="{% url 'the_blogs:new_topic' %}" style="text-decoration:none;">Create your topic</a>
+  </h3>
+</div>
+{% endblock %}

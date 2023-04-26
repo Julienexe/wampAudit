@@ -1,0 +1,217 @@
+{% extends 'wampAudits/base.html' %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block content %}
+  <main id="main">
+
+    <!-- ======= Hero Slider Section ======= -->
+    <section id="hero-slider" class="hero-slider">
+      <div class="container-md" data-aos="fade-in">
+        <div class="row">
+          <div class="col-12">
+            <div class="swiper sliderFeaturedPosts">
+              <div class="swiper-wrapper">
+              
+
+                {% for article in articles %}
+                  {% if article.article_picture %}
+                    {% if article.id <= 6 %}
+                      <!-- for loop -->
+                        <div class="swiper-slide">
+                        <!-- looping through available articles with pictures -->
+                          <a href="{% url 'wampAudits:single-post' article.id %}" class="img-bg d-flex align-items-end" style="background-image: url('{{ article.article_picture.url }}');">
+                            <!-- <img src="{{ request.article.article_picture.url }}"> -->
+                            <div class="img-bg-inner">
+                              <h2>{{article.title}}</h2>
+                              <p>{{ article.text }}</p>
+                            </div>
+                          </a>
+                        </div>
+                    {% endif %}
+                  {% endif %}  
+                {% endfor %}
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Hero Slider Section -->
+
+    <!-- ======= Post Grid Section ======= -->
+    <section id="posts" class="posts">
+      <div class="container" data-aos="fade-up">
+        <div class="row g-5">
+          <div class="col-lg-4">
+            <div class="post-entry-1 lg">
+              {% for article in articles %}
+                {% if article == articles|first %}
+                <a href="{% url 'wampAudits:single-post' article.id %}"><img src="{{ article.article_picture.url }}" alt="" class="img-fluid"></a>
+                  <div class="post-meta"><span class="date">{{ article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                <h2><a href="{% url 'wampAudits:single-post' article.id %}">{{ article.title }}</a></h2>
+                <p class="mb-4 d-block">{{article.text}}</p>
+            
+                <div class="d-flex align-items-center author">
+                  <div class="photo"><img src="static/wampAudits/img/person-1.jpg" alt="" class="img-fluid"></div>
+                    <div class="name">
+                      <h3 class="m-0 p-0">{{article.author}}</h3>
+                    </div>
+                  </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+
+          </div>
+          
+          <div class="col-lg-8">
+            <div class="row g-5">
+              
+              <div class="col-lg-4 border-start custom-border">
+                <div class="post-entry-1">
+                  {% for article in articles %}
+                    {% if article.id <= 3%}
+                      {% if article.article_picture %}
+                        <a href="{% url 'wampAudits:single-post' article.id %}"><img src="{{ article.article_picture.url }}" alt="" class="img-fluid"></a>
+                        <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                        <h2><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}     
+                </div>
+      
+              </div>
+               
+              <div class="col-lg-4 border-start custom-border">
+                <div class="post-entry-1">
+                  {%for article in articles%}
+                    {% if forloop.counter <= 4 and article.article_picture %}
+                      <a href="{% url 'wampAudits:single-post' article.id %}"><img src="{{ article.article_picture.url }}" alt="" class="img-fluid"></a>
+                      <div class="post-meta"><span class="date">{{article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                      <h2><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+
+              <!-- Trending Section -->
+              <div class="col-lg-4">
+
+                <div class="trending">
+                  <h3>Trending</h3>
+                  <ul class="trending-post">
+                    <li>
+                      {% for article in articles %}
+                        {% if forloop.counter <= 6 %}
+                          <a href="{% url 'wampAudits:single-post' article.id %}">
+                            <span class="number">{{article.id}}</span>
+                            <h3>{{article.title}}</h3>
+                            <span class="author">{{article.author}}</span>
+                          </a>
+                        {% endif %}
+                      {% endfor %}
+                
+                  </ul>
+                </div>
+
+              </div> <!-- End Trending Section -->
+            </div>
+          </div>
+
+        </div> <!-- End .row -->
+      </div>
+    </section> <!-- End Post Grid Section -->
+
+    <!-- ======= topics Section ======= -->
+    {% for topic in topics %}
+        <section class="category-section">
+          <div class="container" data-aos="fade-up">
+
+            <div class="section-header d-flex justify-content-between align-items-center mb-5">
+              <h2>{{topic.text}}</h2>
+              <div><a href="{% url 'wampAudits:topic' topic.id %}" class="more">See All {{topic.text}}</a></div>
+            </div>
+    
+            <div class="row">
+              <div class="col-md-9">
+                {% for article in topic.articles.all %}
+                  <!-- header -->
+                  {% if article ==  topic.articles.all.first %}
+                    <div class="d-lg-flex post-entry-2">
+                      <a href="{% url 'wampAudits:single-post' article.id %}" class="me-4 thumbnail mb-4 mb-lg-0 d-inline-block">
+                        <img src="{{ article.article_picture.url }}" alt="" class="img-fluid">
+                      </a>
+                      <div>
+                        <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                        <h3><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h3>
+                        <p>{{article.text|slice:":300"}}</p>
+                        <div class="d-flex align-items-center author">
+                          <div class="photo"><img src="{{ article.article_picture.url }}" alt="" class="img-fluid"></div>
+                          <div class="name">
+                            <h3 class="m-0 p-0">{{article.author}}</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+      
+                  <!-- below header article -->
+                  <div class="row">
+                    <div class="col-lg-4">
+                      {% if forloop.counter == 1 %}
+                        <div class="post-entry-1 border-bottom">
+                          <a href="{% url 'wampAudits:single-post' article.id %}"><img src="{{ article.article_picture.url }}" alt="" class="img-fluid"></a>
+                          <div class="post-meta"><span class="date">{{topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                          <h2 class="mb-2"><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                          <span class="author mb-3 d-block">{{article.author}}</span>
+                          <p class="mb-4 d-block">{{article.text|slice:":70"}}</p>
+                        </div>
+                      {% elif forloop.counter  == 2 %}
+                        <div class="post-entry-1">
+                          <div class="post-meta"><span class="date">{{topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                          <h2 class="mb-2"><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                          <span class="author mb-3 d-block">{{article.author}}</span>
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="col-lg-8">
+                      <!-- <div class="post-entry-1">jjj</div> -->
+                      {% if forloop.counter == 1 %}
+                        <div class="post-entry-1">
+                          <a href="{% url 'wampAudits:single-post' article.id %}"><img src="{{ article.article_picture.url }}" alt="" class="img-fluid"></a>
+                          <div class="post-meta"><span class="date">{{topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                          <h2 class="mb-2"><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                          <span class="author mb-3 d-block">{{article.author}}</span>
+                          <p class="mb-4 d-block">{{article.text|slice:":70"}}</p>
+                        </div>
+                    
+                      {% endif %}                      
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+    
+              <div class="col-md-3">
+                <!-- side articles -->
+                
+                {% for article in topic.articles.all %}
+                  {% if forloop.counter < 7 %}
+                    <div class="post-entry-1 border-bottom">
+                      <div class="post-meta"><span class="date">{{topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                      <h2 class="mb-2"><a href="{% url 'wampAudits:single-post' article.id %}">{{article.title}}</a></h2>
+                      <span class="author mb-3 d-block">{{article.author}}</span>
+                    </div>
+                  {% endif %}  
+                {% endfor %}
+    
+              </div>
+            </div>
+          </div>
+        </section>
+    
+      <!-- end topics section -->
+    {% endfor %}
+  
+
+  </main><!-- End #main -->
+
+{%  endblock %}
