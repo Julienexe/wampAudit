@@ -1,1 +1,1 @@
-web: gunicorn wampAudit.wsgi:application --log-file-
+web: gunicorn wampAudit.wsgi:application 
