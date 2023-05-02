@@ -24,7 +24,7 @@
                             <!-- <img src="{{ request.article.article_picture.url }}"> -->
                             <div class="img-bg-inner">
                               <h2>{{article.title}}</h2>
-                              <p>{{ article.text }}</p>
+                              <p>{{ article.text|slice:":300" }}</p>
                             </div>
                           </a>
                         </div>
@@ -47,7 +47,7 @@
               {% for article in articles %}
                 {% if article == articles|first %}
                 <a href="{% url 'wampAudits:single-post' article.id %}"><img src="{{ article.article_picture.url }}" alt="" class="img-fluid"></a>
-                  <div class="post-meta"><span class="date">{{ article.topic.text}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
+                  <div class="post-meta"><span class="date">{{ article.topic.text|slice:":300"}}</span> <span class="mx-1">&bullet;</span> <span>{{article.date_added}}</span></div>
                 <h2><a href="{% url 'wampAudits:single-post' article.id %}">{{ article.title }}</a></h2>
                 <p class="mb-4 d-block">{{article.text}}</p>
             
